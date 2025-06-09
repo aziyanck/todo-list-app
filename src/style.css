@@ -143,3 +143,9 @@ body {
   color: #888;
 
 }
+
+@media screen and (max-width: 768px) {
+  .app-container{
+    max-width: 70vw;
+  }
+}

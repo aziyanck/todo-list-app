@@ -38,19 +38,25 @@ const Todos = ({ todos, setTodos }) => {
     }
 
 
-    const handleToggleComplete = (id, completed) => {
-        axios.put(`${API_URL}/${id}`, { completed: !completed })
+
+
+
+    const handleToggleComplete = (todo) => {
+        const updatedStatus = !todo.completed;
+        axios.put(`${API_URL}/${todo.id}`, { completed: updatedStatus })
             .then((response) => {
-                const updatedTodos = todos.map(todo =>
-                    todo.id === id ? { ...todo, completed: response.data.completed } : todo
+                const updatedTodos = todos.map(t =>
+                    t.id === todo.id ? { ...t, completed: response.data.completed } : t
                 );
                 setTodos(updatedTodos);
             })
             .catch((error) => {
-                console.error("Error toggling complete:", error);
-                alert(`Failed to toggle complete: ${error.message}`);
+                console.error("Error toggling todo:", error);
+                alert(`Failed to toggle todo: ${error.message}`);
             });
-    }
+    };
+
+
 
     return (
         <div className='todos-wrapper'>
@@ -59,7 +65,7 @@ const Todos = ({ todos, setTodos }) => {
                     <input
                         type="checkbox"
                         checked={!!todo.completed}
-                        onChange={() => handleToggleComplete(todo.id, todo.completed)}
+                        onChange={() => handleToggleComplete(todo)}
                     />
                     <p className={todo.completed ? 'completed' : ''}  >{todo.text}</p>
                     <button onClick={() => handleEdit(todo.id)} className='edit-button'><i className="fa-solid fa-pen-to-square"></i></button>
